@@ -202,6 +202,37 @@
   box-shadow: 0 0 0 4px rgba(163, 108, 58, 0.1);
 }
 
+.field .input-error {
+  border-color: rgba(167, 56, 56, 0.52);
+  box-shadow: 0 0 0 4px rgba(167, 56, 56, 0.1);
+}
+
+.field-error {
+  margin-top: 4px;
+  color: #a33838;
+  font-size: 0.86rem;
+}
+
+.message-banner {
+  margin: 0 0 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 0.92rem;
+  border: 1px solid transparent;
+}
+
+.message-banner--error {
+  color: #8f2d2d;
+  background: rgba(167, 56, 56, 0.12);
+  border-color: rgba(167, 56, 56, 0.32);
+}
+
+.message-banner--success {
+  color: #1f5b2e;
+  background: rgba(70, 138, 87, 0.15);
+  border-color: rgba(70, 138, 87, 0.32);
+}
+
 .form-actions {
   display: flex;
   flex-wrap: wrap;

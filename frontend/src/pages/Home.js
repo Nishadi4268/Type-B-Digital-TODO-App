@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import API from "../api";
 import TodoItem from "../component/TodoItem";
 import TodoForm from "../component/TodoForm";
@@ -7,39 +7,82 @@ const Home = () => {
   const [todos, setTodos] = useState([]);
   const [editing, setEditing] = useState(null);
   const [filter, setFilter] = useState("all");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const fetchTodos = async () => {
-    const res = await API.get("/");
-    setTodos(res.data);
+  const getFriendlyMessage = (error, fallbackMessage) => {
+    return error?.response?.data?.message || fallbackMessage;
   };
+
+  const fetchTodos = useCallback(async () => {
+    try {
+      const res = await API.get("/");
+      setTodos(res.data);
+    } catch (error) {
+      setErrorMessage(getFriendlyMessage(error, "Could not load tasks. Please try again."));
+    }
+  }, []);
 
   useEffect(() => {
     fetchTodos();
-  }, []);
+  }, [fetchTodos]);
 
   const createTodo = async (data) => {
-    await API.post("/", data);
-    fetchTodos();
+    try {
+      setErrorMessage("");
+      setSuccessMessage("");
+      await API.post("/", data);
+      await fetchTodos();
+      setSuccessMessage("Task added successfully.");
+      return true;
+    } catch (error) {
+      setErrorMessage(getFriendlyMessage(error, "Could not add task. Please try again."));
+      return false;
+    }
   };
 
   const updateTodo = async (data) => {
-    await API.put(`/${editing._id}`, data);
-    setEditing(null);
-    fetchTodos();
+    try {
+      setErrorMessage("");
+      setSuccessMessage("");
+      await API.put(`/${editing._id}`, data);
+      setEditing(null);
+      await fetchTodos();
+      setSuccessMessage("Task updated successfully.");
+      return true;
+    } catch (error) {
+      setErrorMessage(getFriendlyMessage(error, "Could not update task. Please try again."));
+      return false;
+    }
   };
 
   const cancelEditing = () => {
     setEditing(null);
+    setErrorMessage("");
   };
 
   const deleteTodo = async (id) => {
-    await API.delete(`/${id}`);
-    fetchTodos();
+    try {
+      setErrorMessage("");
+      setSuccessMessage("");
+      await API.delete(`/${id}`);
+      await fetchTodos();
+      setSuccessMessage("Task deleted.");
+    } catch (error) {
+      setErrorMessage(getFriendlyMessage(error, "Could not delete task. Please try again."));
+    }
   };
 
   const toggleDone = async (id) => {
-    await API.patch(`/${id}/done`);
-    fetchTodos();
+    try {
+      setErrorMessage("");
+      setSuccessMessage("");
+      await API.patch(`/${id}/done`);
+      await fetchTodos();
+      setSuccessMessage("Task status updated.");
+    } catch (error) {
+      setErrorMessage(getFriendlyMessage(error, "Could not update status. Please try again."));
+    }
   };
 
   const visibleTodos = todos.filter((todo) => {
@@ -107,10 +150,17 @@ const Home = () => {
             )}
           </div>
 
+          {errorMessage && <p className="message-banner message-banner--error">{errorMessage}</p>}
+          {!errorMessage && successMessage && (
+            <p className="message-banner message-banner--success">{successMessage}</p>
+          )}
+
           <TodoForm
             onSubmit={editing ? updateTodo : createTodo}
             existing={editing}
             onCancel={cancelEditing}
+            submissionError={errorMessage}
+            onClearError={() => setErrorMessage("")}
           />
         </section>
 
