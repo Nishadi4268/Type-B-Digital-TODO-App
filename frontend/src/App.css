@@ -20,7 +20,7 @@
 .todo-app {
   position: relative;
   z-index: 1;
-  width: min(1428px, 100%);
+  width: min(1500px, 100%);
   margin: 0 auto;
   display: grid;
   gap: 18px;
@@ -29,7 +29,7 @@
 .hero-card,
 .workspace-card {
   border: 1px solid rgba(31, 40, 54, 0.1);
-  background: rgba(255, 248, 239, 0.88);
+  background: rgba(236, 220, 199, 0.88);
   box-shadow: 0 16px 38px rgba(31, 40, 54, 0.08);
 }
 
@@ -50,6 +50,18 @@
 .hero-copy {
   display: grid;
   gap: 8px;
+}
+
+.hero-icon {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(31, 40, 54, 0.12);
+  background: #ffffff;
+  padding: 8px;
+  justify-self: center;
+  box-shadow: 0 10px 20px rgba(31, 40, 54, 0.1);
 }
 
 .hero-copy h1,

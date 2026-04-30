@@ -64,10 +64,15 @@ const Home = () => {
       <main className="todo-app">
         <section className="hero-card">
           <div className="hero-copy">
+            <img
+              className="hero-icon"
+              src={`${process.env.PUBLIC_URL}/icon.webp`}
+              alt="Todo app icon"
+            />
             <p className="eyebrow">Todo notebook</p>
             <h1>Keep today’s work visible without the clutter.</h1>
             <p className="hero-text">
-              Jot down what matters, switch between active and finished work, and
+              Note down what matters, switch between active and finished work, and
               edit things in place when plans change.
             </p>
           </div>
