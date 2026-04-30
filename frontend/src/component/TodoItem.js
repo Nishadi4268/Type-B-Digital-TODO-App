@@ -31,7 +31,15 @@ const TodoItem = ({ todo, onDelete, onToggle, onEdit }) => {
         <button type="button" className="text-button" onClick={() => onEdit(todo)}>
           Edit
         </button>
-        <button type="button" className="danger-button" onClick={() => onDelete(todo._id)}>
+        <button 
+          type="button" 
+          className="danger-button" 
+          onClick={() => {
+            if (window.confirm(`Are you sure you want to delete "${todo.title}"?`)) {
+              onDelete(todo._id);
+            }
+          }}
+        >
           Delete
         </button>
       </div>
